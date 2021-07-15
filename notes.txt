@@ -1,0 +1,127 @@
+
+Function prototypes
+A function prototype is one which will usually appear before the main function and it specifies the return type and parameters of the function
+
+Example
+
+```c
+#include <stdio.h>
+
+int sum(int a, int b); // function declaration
+
+int main(int argc, char* argv) 
+{
+  int a, b;
+  a = 4; b = 5;
+  printf("Suming %d and %d = %d", a, b, sum(a, b));
+  return 0;
+
+}
+
+// function definition
+
+int sum(int a, int b) 
+{
+   return a + b;
+}
+```
+
+# Static variables
+They are variable local to a scope and exists for the life time of a program.
+They can be re-accessed every time the function is entered
+
+## Printing the address of a variable
+I have wanted to do this for long and i have infact, acheived it a couple of times... without being aware and unintentionally
+In order to print-format the address of a variable... Think again. They are hexadecimal values. We represent hexadecimal values with 0xff etc
+It probably means we could use "%x" to get the address right ?
+
+## What's the point
+Pointers shoudld be initialized with a value pointing to NULL (by convention?) until they point to the address of the variable we want.
+Getting the value a pointer points too is as easy as dereferencing it with *pointer
+Arithmetic operations can be applied to what a pointer is pointing too. Just make sure to dereference the value during the operation
+
+Pointers become very handy with arrays. Arrays are homogenous and linear. They key focus here is 'linear' which means the address of each element
+is found at contiguous memory locations.
+Remember we can carry out arithmetic with pointers. One key thing is that using + directly on a pointer makes it move one address forward while -
+makes it move one address backwards. In arrays therefore, we can use pointers to traverse the element and get their address for any operation.
+It is worth noting that the name of an array points to the first element in that array. Therefore if we have the following
+
+int array = {1, 2, 3, 4, 5};
+int *ptr = array; // same as *ptr = &array[0]
+
+When a pointer is incremented or decremented, the address increases or decreases by the number of bytes it is pointed to.
+Say we have an array of integers and we want to increment the address. It will incremented by 4bytes as that is the size of an integer in memory. 
+Same applies to other primitive types.
+
+## Pass by value and pass by reference
+An entire array value cannot be passed to a function but its reference can be. It is better to do so. 
+Pass by value passes the all of the values in an array while pass by reference passes the array reference which is essentially the address of that array.
+
+A null character is same as \0
+NULL == 0\
+
+In C, we can use the string in stdlib to access some string operations such as 
+strlen() -> get length of a string
+strcat() -> concatenate two strings and store result in first string
+strcpy() -> copy a string into another
+strlwr() -> convert the string to lowercase
+strupr() -> convert the string to uppercase
+strrev() -> reverse the string
+strcmp() -> compare two strings
+
+## sprintf() and sscanf()
+sprintf() takes as first argumnent the value in which to store the formed string while the remaining argumnets will be what will constitute the string
+
+## Converting a string to a number.
+We have three functions in the C std lib to convert a string into a number
+
+int atoi(str) -> converts a string 'str' to an integer. Returns 0 of the first character is not a number or no numbers are encountered
+double atof(str) -> converts a string 'str' to a float. Returns 0.0 if the first character is not a number or no numbers are encountered
+long atol(str) -> converts a string 'str' to a long integer. Returns 0 if the first character is not a number or no numbers are encountered
+
+
+*******
+Getting warning does not mean it did not compile ;)
+*******
+
+## Function pointers
+
+In C we have function pointers. They are especially use to create pointers that point to executable code. A function pointer have the typical structure
+of a normal function : return_type (*fn_name)(parameters_type)
+[] -> the paranthesis around fn_name tells the compiler that the function is a pointer. Without the paranthesis, the compiler thinks the function returns a
+pointer
+
+## void pointer
+The void pointer is a pointer used to point to any address in memory.
+It can be used to point to any address in memory. The caveat is that when dereferencing this pointer, you have to type cast it to the right primitive/data type
+before you can access its value.
+Pointer arithmetic cannot be performed with void pointers.
+You can only assign a pointer to a character but not a string. This is because there are no primitive for strings and 
+when you type cast a string (also known as  char[]), you will get only the first character and not the whole thing.
+
+Void pointers are also useful in functions. You can use void pointers in functions so it can return any value as well as take any type as argument.
+
+## structure 
+In C we have structures used to create composite/aggregate data types. To define them, you use the struct keyword
+Example
+struct Human {
+	int age;
+	char name[1000];
+	any thing;
+}; // Human is the structure tag or name
+
+In order to declare a variable that follows a specific structure, you prepend it by the struct keyword once more followed by the structure tag.
+You can get the size needed to hold a struct in memory using the sizeof function.
+
+You can also make use of a named initialization when creating an value using a struct
+it follows the following order
+instance = {.age=13, .name="Some person", .thing = Anything you want}
+
+It is possible to create your won type by prepending typedef infront of a struct
+
+When accessing the member of a struct passed as a pointer, you need to dereference the pointer first meaning (*yourstruct).member . 
+Fortunately, C provides us with an even cleaner way of doing so using the '->' operator that allows us to access the member of a struct via its pointer.
+It is preferable to use -> in order to access the members of a struct and typedef struct
+
+## Type Casting
+Type casting follow the format (type)variable_ or value_
